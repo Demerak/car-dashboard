@@ -1,12 +1,18 @@
 import asyncio
 import websockets
 import random
+import json
 
 async def send_speed(websocket, path):
     while True:
-        speed_kmh = random.uniform(0, 130)  # Replace this with your speed calculation logic
-        await websocket.send(str(speed_kmh))
-        await asyncio.sleep(0.5)  # Update speed every second
+        # to replace with real data
+        speed_kmh = random.uniform(0, 130) 
+        rpm = random.uniform(0, 5500)
+        data = {
+            'speed': speed_kmh,
+            'rpm': rpm }
+        await websocket.send(json.dumps(data))
+        await asyncio.sleep(0.5) 
 
 start_server = websockets.serve(send_speed, "localhost", 8765)
 
