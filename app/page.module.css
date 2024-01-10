@@ -2,17 +2,14 @@
   display: flex;
   flex-flow: row wrap;
   justify-content: flex-start;
-  gap: 10rem;
-  padding: 6rem;
-  min-height: 100vh;
+  width: 1024px;
+  height: 600px;
+  gap: 1rem;
+  padding: 1rem;
   background-color: var(--background-color);
 }
 
-.container {
-  background-color: var(--background-color-2);
-  width: 50px;
-  height: 50px;
-}
+
 
 /* Enable hover only on non-touch devices */
 @media (hover: hover) and (pointer: fine) {

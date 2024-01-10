@@ -3,15 +3,21 @@
 import { React, useState, useEffect} from 'react';
 import styles from './page.module.css';
 import Plot from 'react-plotly.js';
+import Chart from "react-apexcharts";
 
 
 
 let socket;
+const backgroundColor = '#46648c'
 
 export default function Home() {
 
   const [speed, setSpeed] = useState(200);
   const [rpm, setRPM] = useState(0);
+  const [engineLoad, setEngineLoad] = useState(0);
+  const [absoluteLoad, setAbsoluteLoad] = useState(0);
+  const [throttlePos, setThrottlePos] = useState(0);
+  const [fuelLevel, setFuelLevel] = useState(100);
   const [coolantTemp, setCoolantTemp] = useState(0);
 
   useEffect(() => {
@@ -24,7 +30,10 @@ export default function Home() {
       const obj = JSON.parse(event.data);
       setSpeed(parseFloat(obj.speed).toFixed(2));
       setRPM(parseFloat(obj.rpm).toFixed(2));
-      
+      setEngineLoad(parseFloat(obj.engineLoad).toFixed(2));
+      setAbsoluteLoad(parseFloat(obj.absoluteLoad).toFixed(2));
+      setThrottlePos(parseFloat(obj.throttlePos).toFixed(2));
+      setFuelLevel(parseFloat(obj.fuelLevel).toFixed(2)); 
     };
 
     return () => {
@@ -86,8 +95,66 @@ export default function Home() {
     }
   ];
 
-  let layout = { width: 300, height: 200, margin: { t: 0, b: 0 }, paper_bgcolor : '#46648c'};
+  let layout = { width: 400, height: 200, margin: { t: 30, b: 0 }, paper_bgcolor : backgroundColor};
+
+  const createBarChartOptions = (titleText, data) => ({
+    chart: {
+      height: 70,
+      type: 'bar',
+      stacked: true,
+      sparkline: {
+        enabled: true
+      }
+    },
+    plotOptions: {
+      bar: {
+        horizontal: true,
+        barHeight: '20%',
+        colors: {
+          backgroundBarColors: ['#40475D']
+        }
+      },
+    },
+    stroke: {
+      width: 0,
+    },
+    series: [{
+      titleText,
+      data: [data]
+    }],
+    title: {
+      floating: true,
+      offsetX: -10,
+      offsetY: 5,
+      text: titleText
+    },
+    subtitle: {
+      floating: true,
+      align: 'right',
+      offsetY: 0,
+      text: data + '%',
+      style: {
+        fontSize: '20px'
+      }
+    },
+    tooltip: {
+      enabled: false
+    },
+    xaxis: {
+      categories: [titleText],
+    },
+    yaxis: {
+      max: 100
+    },
+    fill: {
+      opacity: 1
+    }
+  });
   
+  const optionsEngineLoad = createBarChartOptions('Engine Load', engineLoad)
+  const optionsAbsoluteLoad = createBarChartOptions('Absolute Load', absoluteLoad)
+  const optionsThorttlePos = createBarChartOptions('Throttle Pos', throttlePos)
+  const optionsFuelLevel = createBarChartOptions('Fuel Level', fuelLevel)
 
   return (
     <main className={styles.main}>
@@ -98,7 +165,30 @@ export default function Home() {
         {<Plot data={rpm_data} layout={layout} />};
       </div>
       <div className={styles.container}>
-      
+        <Chart
+          options={optionsEngineLoad}
+          series={optionsEngineLoad.series}
+          type="bar"
+          height={70}
+        />
+        <Chart
+          options={optionsAbsoluteLoad}
+          series={optionsAbsoluteLoad.series}
+          type="bar"
+          height={70}
+        />
+        <Chart
+          options={optionsThorttlePos}
+          series={optionsThorttlePos.series}
+          type="bar"
+          height={70}
+        />
+        <Chart
+          options={optionsFuelLevel}
+          series={optionsFuelLevel.series}
+          type="bar"
+          height={70}
+        />
       </div>
     </main>
   )
