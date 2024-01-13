@@ -16,7 +16,8 @@
     "react-apexcharts": "^1.4.1",
     "react-dom": "^18",
     "react-plotly.js": "^2.6.0",
-    "socket.io-client": "^4.7.3"
+    "socket.io-client": "^4.7.3",
+    "swiper": "^11.0.5"
   },
   "devDependencies": {
     "eslint": "^8",

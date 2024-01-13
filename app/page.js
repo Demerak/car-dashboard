@@ -4,8 +4,9 @@ import { React, useState, useEffect} from 'react';
 import styles from './page.module.css';
 import Plot from 'react-plotly.js';
 import Chart from "react-apexcharts";
+import { Swiper, SwiperSlide } from 'swiper/react';
 
-
+import "swiper/css";
 
 let socket;
 const backgroundColor = '#46648c'
@@ -18,7 +19,12 @@ export default function Home() {
   const [absoluteLoad, setAbsoluteLoad] = useState(0);
   const [throttlePos, setThrottlePos] = useState(0);
   const [fuelLevel, setFuelLevel] = useState(100);
+
   const [coolantTemp, setCoolantTemp] = useState(0);
+
+  const [timeStamps, setTimeStamps] = useState([]);
+  const [speedArrayData, setSpeedArrayData] = useState([]);
+
 
   useEffect(() => {
    
@@ -34,6 +40,9 @@ export default function Home() {
       setAbsoluteLoad(parseFloat(obj.absoluteLoad).toFixed(2));
       setThrottlePos(parseFloat(obj.throttlePos).toFixed(2));
       setFuelLevel(parseFloat(obj.fuelLevel).toFixed(2)); 
+
+      setTimeStamps((prevTimeStamps) => [...prevTimeStamps, new Date()]);
+      setSpeedArrayData((prevSpeedData) => [...prevSpeedData, parseFloat(obj.speed).toFixed(2)]);
     };
 
     return () => {
@@ -41,7 +50,7 @@ export default function Home() {
     };
   }, []);
 
-  let speed_data = [
+  let speedData = [
     {
       type: "indicator",
       mode: "gauge+number+delta",
@@ -68,7 +77,7 @@ export default function Home() {
     }
   ];
 
-  let rpm_data = [
+  let RPM_Data = [
     {
       type: "indicator",
       mode: "gauge+number+delta",
@@ -95,7 +104,21 @@ export default function Home() {
     }
   ];
 
-  let layout = { width: 400, height: 200, margin: { t: 30, b: 0 }, paper_bgcolor : backgroundColor};
+  const lineChartLayout = {
+    width: 960, 
+    height: 540, 
+    title: 'Speed (Km/h)',
+    xaxis: { title: 'Time' },
+    yaxis: { title: 'Speed' },
+    paper_bgcolor : backgroundColor,
+    plot_bgcolor : backgroundColor,
+  }
+
+  let gaugeChartLayout = { 
+    width: 400, 
+    height: 200, 
+    margin: { t: 30, b: 0 }, 
+    paper_bgcolor : backgroundColor};
 
   const createBarChartOptions = (titleText, data) => ({
     chart: {
@@ -157,40 +180,60 @@ export default function Home() {
   const optionsFuelLevel = createBarChartOptions('Fuel Level', fuelLevel)
 
   return (
-    <main className={styles.main}>
-      <div className={styles.container}>
-        {<Plot data={speed_data} layout={layout} />};
-      </div>
-      <div className={styles.container}>
-        {<Plot data={rpm_data} layout={layout} />};
-      </div>
-      <div className={styles.container}>
-        <Chart
-          options={optionsEngineLoad}
-          series={optionsEngineLoad.series}
-          type="bar"
-          height={70}
-        />
-        <Chart
-          options={optionsAbsoluteLoad}
-          series={optionsAbsoluteLoad.series}
-          type="bar"
-          height={70}
-        />
-        <Chart
-          options={optionsThorttlePos}
-          series={optionsThorttlePos.series}
-          type="bar"
-          height={70}
-        />
-        <Chart
-          options={optionsFuelLevel}
-          series={optionsFuelLevel.series}
-          type="bar"
-          height={70}
-        />
-      </div>
-    </main>
+    <Swiper>
+        <SwiperSlide>
+          <div className={styles.main}>
+            <div className={styles.container}>
+              {<Plot data={speedData} layout={gaugeChartLayout} />};
+            </div>
+            <div className={styles.container}>
+              {<Plot data={RPM_Data} layout={gaugeChartLayout} />};
+            </div>
+            <div className={styles.container}>
+              <Chart
+                options={optionsEngineLoad}
+                series={optionsEngineLoad.series}
+                type="bar"
+                height={70}
+              />
+              <Chart
+                options={optionsAbsoluteLoad}
+                series={optionsAbsoluteLoad.series}
+                type="bar"
+                height={70}
+              />
+              <Chart
+                options={optionsThorttlePos}
+                series={optionsThorttlePos.series}
+                type="bar"
+                height={70}
+              />
+              <Chart
+                options={optionsFuelLevel}
+                series={optionsFuelLevel.series}
+                type="bar"
+                height={70}
+              />
+            </div>
+          </div>
+        </SwiperSlide>
+        <SwiperSlide>
+          <div className={styles.main}>
+            <div className={styles.lineChart}>
+              <Plot
+                data={[{
+                  x: timeStamps,
+                  y: speedArrayData,
+                  type: 'scatter',
+                  mode: 'lines+markers',
+                  marker: { color: 'black' },
+                  }]}
+                layout={lineChartLayout}
+              />
+            </div>
+          </div>
+        </SwiperSlide>
+      </Swiper>
   )
 }
 
