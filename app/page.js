@@ -236,30 +236,3 @@ export default function Home() {
       </Swiper>
   )
 }
-
-  // useEffect(() => {
-   
-  //   socket = io('http://localhost:8765');
-
-  //   console.log('Socket connected!', socket);
-
-  //   socket.on('speed', (data) => {
-  //     console.log('Speed data received!');
-  //     console.log(data);
-  //     setSpeed(data);
-  //   });
-
-  //   return (() => { 
-  //     socket.disconnect();
-  //   })
-  // }, [speed]);
-
-  // let data = [
-  //   {
-  //     domain: { x: [0, 100], y: [0, 100] },
-  //     value: speed,
-  //     title: { text: "Speed" },
-  //     type: "indicator",
-  //     mode: "gauge+number"
-  //   }
-  // ];

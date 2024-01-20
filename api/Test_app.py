@@ -33,7 +33,7 @@ async def send_speed(websocket, path):
         await websocket.send(json.dumps(data))
         await asyncio.sleep(0.5) 
 
-start_server = websockets.serve(send_speed, "localhost", 8765)
+start_server = websockets.serve(send_speed, "0.0.0.0", 8765)
 
 asyncio.get_event_loop().run_until_complete(start_server)
 asyncio.get_event_loop().run_forever()
