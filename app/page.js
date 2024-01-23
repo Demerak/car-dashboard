@@ -2,14 +2,15 @@
 
 import { React, useState, useEffect} from 'react';
 import styles from './page.module.css';
-import Plot from 'react-plotly.js';
-import Chart from "react-apexcharts";
+import dynamic from 'next/dynamic'
 import { Swiper, SwiperSlide } from 'swiper/react';
 
 import "swiper/css";
 
-let socket;
-const backgroundColor = '#46648c'
+const Plot = dynamic(() => import('react-plotly.js'), { ssr: false });
+const Chart = dynamic(() => import('react-apexcharts'), { ssr: false });
+
+const backgroundColor = '#46648c';
 
 export default function Home() {
 
@@ -50,7 +51,7 @@ export default function Home() {
     };
   }, []);
 
-  let speedData = [
+  const speedData = [
     {
       type: "indicator",
       mode: "gauge+number+delta",
@@ -77,7 +78,7 @@ export default function Home() {
     }
   ];
 
-  let RPM_Data = [
+  const RPM_Data = [
     {
       type: "indicator",
       mode: "gauge+number+delta",
@@ -112,17 +113,19 @@ export default function Home() {
     yaxis: { title: 'Speed' },
     paper_bgcolor : backgroundColor,
     plot_bgcolor : backgroundColor,
-  }
+  };
 
-  let gaugeChartLayout = { 
+  const gaugeChartLayout = { 
     width: 400, 
     height: 200, 
     margin: { t: 30, b: 0 }, 
-    paper_bgcolor : backgroundColor};
+    paper_bgcolor : backgroundColor
+  };
 
   const createBarChartOptions = (titleText, data) => ({
     chart: {
       height: 70,
+      width: '100%',
       type: 'bar',
       stacked: true,
       sparkline: {
@@ -191,24 +194,28 @@ export default function Home() {
             </div>
             <div className={styles.container}>
               <Chart
+                width= {'100%'}
                 options={optionsEngineLoad}
                 series={optionsEngineLoad.series}
                 type="bar"
                 height={70}
               />
               <Chart
+                width= {'100%'}
                 options={optionsAbsoluteLoad}
                 series={optionsAbsoluteLoad.series}
                 type="bar"
                 height={70}
               />
               <Chart
+                width= {'100%'}
                 options={optionsThorttlePos}
                 series={optionsThorttlePos.series}
                 type="bar"
                 height={70}
               />
               <Chart
+                width= {'100%'}
                 options={optionsFuelLevel}
                 series={optionsFuelLevel.series}
                 type="bar"
