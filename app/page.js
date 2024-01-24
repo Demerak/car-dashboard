@@ -26,12 +26,17 @@ export default function Home() {
   const [timeStamps, setTimeStamps] = useState([]);
   const [speedArrayData, setSpeedArrayData] = useState([]);
 
+  const [isConnected, setIsConnected] = useState(false);
+
 
   useEffect(() => {
-   
-    const socket = new WebSocket('ws://localhost:8765');
 
-    console.log('Socket connected!', socket);
+    const socket = new WebSocket('ws://localhost:8765');
+   
+    socket.onopen = () => {
+      console.log('Socket connected!', socket);
+      setIsConnected(true);
+    }
 
     socket.onmessage = (event) => {
       const obj = JSON.parse(event.data);
@@ -44,11 +49,13 @@ export default function Home() {
 
       setTimeStamps((prevTimeStamps) => [...prevTimeStamps, new Date()]);
       setSpeedArrayData((prevSpeedData) => [...prevSpeedData, parseFloat(obj.speed).toFixed(2)]);
+      setIsConnected(true);
     };
 
-    return () => {
-      socket.close();
-    };
+    socket.onclose = () => {
+      console.log('Socket closed!');
+      setIsConnected(false);
+    }
   }, []);
 
   const speedData = [
@@ -182,64 +189,73 @@ export default function Home() {
   const optionsThorttlePos = createBarChartOptions('Throttle Pos', throttlePos)
   const optionsFuelLevel = createBarChartOptions('Fuel Level', fuelLevel)
 
+
   return (
-    <Swiper>
-        <SwiperSlide>
-          <div className={styles.main}>
-            <div className={styles.container}>
-              {<Plot data={speedData} layout={gaugeChartLayout} />};
+    <div className={styles.main}>
+      {!isConnected ? 
+        <div className={styles.errorContainer}>
+          <h1>WebSocket Not Connected</h1>
+        </div>
+        : 
+        <Swiper>
+          <SwiperSlide>
+            <div className={styles.main}>
+              <div className={styles.container}>
+                {<Plot data={speedData} layout={gaugeChartLayout} />};
+              </div>
+              <div className={styles.container}>
+                {<Plot data={RPM_Data} layout={gaugeChartLayout} />};
+              </div>
+              <div className={styles.container}>
+                <Chart
+                  width= {'100%'}
+                  options={optionsEngineLoad}
+                  series={optionsEngineLoad.series}
+                  type="bar"
+                  height={70}
+                />
+                <Chart
+                  width= {'100%'}
+                  options={optionsAbsoluteLoad}
+                  series={optionsAbsoluteLoad.series}
+                  type="bar"
+                  height={70}
+                />
+                <Chart
+                  width= {'100%'}
+                  options={optionsThorttlePos}
+                  series={optionsThorttlePos.series}
+                  type="bar"
+                  height={70}
+                />
+                <Chart
+                  width= {'100%'}
+                  options={optionsFuelLevel}
+                  series={optionsFuelLevel.series}
+                  type="bar"
+                  height={70}
+                />
+              </div>
             </div>
-            <div className={styles.container}>
-              {<Plot data={RPM_Data} layout={gaugeChartLayout} />};
+          </SwiperSlide>
+          <SwiperSlide>
+            <div className={styles.main}>
+              <div className={styles.lineChart}>
+                <Plot
+                  data={[{
+                    x: timeStamps,
+                    y: speedArrayData,
+                    type: 'scatter',
+                    mode: 'lines+markers',
+                    marker: { color: 'black' },
+                    }]}
+                  layout={lineChartLayout}
+                />
+              </div>
             </div>
-            <div className={styles.container}>
-              <Chart
-                width= {'100%'}
-                options={optionsEngineLoad}
-                series={optionsEngineLoad.series}
-                type="bar"
-                height={70}
-              />
-              <Chart
-                width= {'100%'}
-                options={optionsAbsoluteLoad}
-                series={optionsAbsoluteLoad.series}
-                type="bar"
-                height={70}
-              />
-              <Chart
-                width= {'100%'}
-                options={optionsThorttlePos}
-                series={optionsThorttlePos.series}
-                type="bar"
-                height={70}
-              />
-              <Chart
-                width= {'100%'}
-                options={optionsFuelLevel}
-                series={optionsFuelLevel.series}
-                type="bar"
-                height={70}
-              />
-            </div>
-          </div>
-        </SwiperSlide>
-        <SwiperSlide>
-          <div className={styles.main}>
-            <div className={styles.lineChart}>
-              <Plot
-                data={[{
-                  x: timeStamps,
-                  y: speedArrayData,
-                  type: 'scatter',
-                  mode: 'lines+markers',
-                  marker: { color: 'black' },
-                  }]}
-                layout={lineChartLayout}
-              />
-            </div>
-          </div>
-        </SwiperSlide>
-      </Swiper>
+          </SwiperSlide>
+        </Swiper>
+      }
+    </div>
   )
 }

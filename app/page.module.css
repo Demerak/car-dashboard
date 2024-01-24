@@ -9,6 +9,17 @@
   background-color: var(--background-color);
 }
 
+.errorContainer {
+  display: flex;
+  flex-flow: column wrap;
+  justify-content: center;
+  align-items: center;
+  width: 100%;
+  height: 100%;
+  color: white;
+  background-color: var(--background-end-rgb);
+}
+
 .lineChart {
   width: 100%;
   height: 100%;
