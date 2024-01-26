@@ -4,51 +4,15 @@
   --font-mono: ui-monospace, Menlo, Monaco, 'Cascadia Mono', 'Segoe UI Mono',
     'Roboto Mono', 'Oxygen Mono', 'Ubuntu Monospace', 'Source Code Pro',
     'Fira Mono', 'Droid Sans Mono', 'Courier New', monospace;
-  
-  --foreground-rgb: 20, 20, 20;
-  --background-start-rgb:  #242444;
-  --background-end-rgb:  #46648c;
 
-  --foreground-rgb: 0, 0, 0;
-  --background-color: #242444;
+  --background-color: #242424;
+  --background-color-layer:  #161717;
+
   --background-color-2: #46648c;
   --blue-color-1: #146ca4;
   --blue-color-2: #52b7e9;
   --blue-color-3: #189de4;
   --red-color-1: #ff0000;
-}
-
-@media (prefers-color-scheme: dark) {
-  :root {
-    --foreground-rgb:  #242444;
-    --background-start-rgb:  #242444;
-    --background-end-rgb:  #242444;
-
-    --primary-glow: radial-gradient(rgba(1, 65, 255, 0.4), rgba(1, 65, 255, 0));
-    --secondary-glow: linear-gradient(
-      to bottom right,
-      rgba(1, 65, 255, 0),
-      rgba(1, 65, 255, 0),
-      rgba(1, 65, 255, 0.3)
-    );
-
-    --tile-start-rgb: 2, 13, 46;
-    --tile-end-rgb: 2, 5, 19;
-    --tile-border: conic-gradient(
-      #ffffff80,
-      #ffffff40,
-      #ffffff30,
-      #ffffff20,
-      #ffffff10,
-      #ffffff10,
-      #ffffff80
-    );
-
-    --callout-rgb: 20, 20, 20;
-    --callout-border-rgb: 108, 108, 108;
-    --card-rgb: 100, 100, 100;
-    --card-border-rgb: 200, 200, 200;
-  }
 }
 
 * {

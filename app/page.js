@@ -10,7 +10,8 @@ import "swiper/css";
 const Plot = dynamic(() => import('react-plotly.js'), { ssr: false });
 const Chart = dynamic(() => import('react-apexcharts'), { ssr: false });
 
-const backgroundColor = '#46648c';
+const backgroundColor = '#242424';
+const backgroundColorLayer = '#161717';
 
 export default function Home() {
 
@@ -90,7 +91,7 @@ export default function Home() {
       type: "indicator",
       mode: "gauge+number+delta",
       value: rpm,
-      title: { text: "RPM", font: { size: 24 } },
+      title: { text: "RPM", font: { size: 24 }},
       delta: { reference: 90, decreasing: { color: "green" } },
       gauge: {
         axis: { range: [null, 5500], tickwidth: 1, tickcolor: "#146ca4" },
@@ -118,15 +119,16 @@ export default function Home() {
     title: 'Speed (Km/h)',
     xaxis: { title: 'Time' },
     yaxis: { title: 'Speed' },
-    paper_bgcolor : backgroundColor,
-    plot_bgcolor : backgroundColor,
+    paper_bgcolor : backgroundColorLayer,
+    plot_bgcolor : backgroundColorLayer,
   };
 
   const gaugeChartLayout = { 
     width: 400, 
     height: 200, 
     margin: { t: 30, b: 0 }, 
-    paper_bgcolor : backgroundColor
+    paper_bgcolor:'rgba(0,0,0,0)',
+    plot_bgcolor:'rgba(0,0,0,0)'
   };
 
   const createBarChartOptions = (titleText, data) => ({
@@ -159,7 +161,8 @@ export default function Home() {
       floating: true,
       offsetX: -10,
       offsetY: 5,
-      text: titleText
+      text: titleText,
+
     },
     subtitle: {
       floating: true,
@@ -167,7 +170,8 @@ export default function Home() {
       offsetY: 0,
       text: data + '%',
       style: {
-        fontSize: '20px'
+        fontSize: '20px',
+  
       }
     },
     tooltip: {
@@ -201,10 +205,10 @@ export default function Home() {
           <SwiperSlide>
             <div className={styles.main}>
               <div className={styles.container}>
-                {<Plot data={speedData} layout={gaugeChartLayout} />};
+                {<Plot data={speedData} layout={gaugeChartLayout} />}
               </div>
               <div className={styles.container}>
-                {<Plot data={RPM_Data} layout={gaugeChartLayout} />};
+                {<Plot data={RPM_Data} layout={gaugeChartLayout} />}
               </div>
               <div className={styles.container}>
                 <Chart
