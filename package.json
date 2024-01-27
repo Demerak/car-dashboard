@@ -3,6 +3,7 @@
   "version": "0.1.0",
   "private": true,
   "scripts": {
+    "tauri": "tauri",
     "dev": "next dev",
     "build": "next build",
     "start": "next start",
@@ -20,6 +21,7 @@
     "swiper": "^11.0.5"
   },
   "devDependencies": {
+    "@tauri-apps/cli": "^1.5.9",
     "eslint": "^8",
     "eslint-config-next": "14.0.4"
   }
