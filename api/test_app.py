@@ -21,13 +21,15 @@ async def send_speed(websocket, path):
         engine_load = generate_value(engine_load)
         absolute_load = generate_value(absolute_load)
         throttle_pos = generate_value(throttle_pos)
+        engine_run_time = random.uniform(0, 1000)
         data = {
             'speed': speed_kmh,
             'rpm': rpm,
             'engineLoad': engine_load,
             'absoluteLoad': absolute_load,
             'throttlePos': throttle_pos,
-            'fuelLevel': fuel_level
+            'fuelLevel': fuel_level,
+            'engineRunTime': engine_run_time
 
              }
         await websocket.send(json.dumps(data))
