@@ -2,7 +2,8 @@
 
 import { React, useState, useEffect} from 'react';
 import styles from './page.module.css';
-import dynamic from 'next/dynamic'
+import dynamic from 'next/dynamic';
+import AutoSizer from "react-virtualized-auto-sizer";
 import { Swiper, SwiperSlide } from 'swiper/react';
 
 import "swiper/css";
@@ -12,6 +13,7 @@ const Chart = dynamic(() => import('react-apexcharts'), { ssr: false });
 
 const backgroundColor = '#242424';
 const backgroundColorLayer = '#161717';
+const blueColor = '#146ca4';
 
 export default function Home() {
 
@@ -21,6 +23,7 @@ export default function Home() {
   const [absoluteLoad, setAbsoluteLoad] = useState(0);
   const [throttlePos, setThrottlePos] = useState(0);
   const [fuelLevel, setFuelLevel] = useState(100);
+  const [engineRunTime, setEngineRunTime] = useState(0);
 
   const [coolantTemp, setCoolantTemp] = useState(0);
 
@@ -28,7 +31,6 @@ export default function Home() {
   const [speedArrayData, setSpeedArrayData] = useState([]);
 
   const [isConnected, setIsConnected] = useState(false);
-
 
   useEffect(() => {
 
@@ -47,6 +49,8 @@ export default function Home() {
       setAbsoluteLoad(parseFloat(obj.absoluteLoad).toFixed(2));
       setThrottlePos(parseFloat(obj.throttlePos).toFixed(2));
       setFuelLevel(parseFloat(obj.fuelLevel).toFixed(2)); 
+
+      setEngineRunTime(parseFloat(obj.engineRunTime).toFixed(2));
 
       setTimeStamps((prevTimeStamps) => [...prevTimeStamps, new Date()]);
       setSpeedArrayData((prevSpeedData) => [...prevSpeedData, parseFloat(obj.speed).toFixed(2)]);
@@ -113,30 +117,16 @@ export default function Home() {
     }
   ];
 
-  const lineChartLayout = {
-    width: 960, 
-    height: 540, 
-    title: 'Speed (Km/h)',
-    xaxis: { title: 'Time' },
-    yaxis: { title: 'Speed' },
-    paper_bgcolor : backgroundColorLayer,
-    plot_bgcolor : backgroundColorLayer,
-  };
-
-  const gaugeChartLayout = { 
-    width: 400, 
-    height: 200, 
-    margin: { t: 30, b: 0 }, 
+  let chartLayout = (height, width) => ({ 
+    width: width, 
+    height: height,
     paper_bgcolor:'rgba(0,0,0,0)',
     plot_bgcolor:'rgba(0,0,0,0)'
-  };
+  });
 
   const createBarChartOptions = (titleText, data) => ({
     chart: {
-      height: 70,
-      width: '100%',
       type: 'bar',
-      stacked: true,
       sparkline: {
         enabled: true
       }
@@ -162,7 +152,6 @@ export default function Home() {
       offsetX: -10,
       offsetY: 5,
       text: titleText,
-
     },
     subtitle: {
       floating: true,
@@ -170,15 +159,11 @@ export default function Home() {
       offsetY: 0,
       text: data + '%',
       style: {
-        fontSize: '20px',
-  
+        fontSize: '18px',
       }
     },
     tooltip: {
       enabled: false
-    },
-    xaxis: {
-      categories: [titleText],
     },
     yaxis: {
       max: 100
@@ -187,15 +172,38 @@ export default function Home() {
       opacity: 1
     }
   });
-  
-  const optionsEngineLoad = createBarChartOptions('Engine Load', engineLoad)
-  const optionsAbsoluteLoad = createBarChartOptions('Absolute Load', absoluteLoad)
-  const optionsThorttlePos = createBarChartOptions('Throttle Pos', throttlePos)
-  const optionsFuelLevel = createBarChartOptions('Fuel Level', fuelLevel)
+
+  const optionsEngineLoad = createBarChartOptions('Engine Load', engineLoad);
+  const optionsAbsoluteLoad = createBarChartOptions('Absolute Load', absoluteLoad);
+  const optionsThorttlePos = createBarChartOptions('Throttle Pos', throttlePos);
+  const optionsFuelLevel = createBarChartOptions('Fuel Level', fuelLevel);
+
+  const runtimeData = [
+    {
+      type: "indicator",
+      mode: "number",
+      value: engineRunTime,
+      number: { suffix: "s" },
+      domain: { x: [0, 1], y: [0, 1] }
+    }
+  ];
+
+  let lineChartLayout = (height, width) => ({ 
+    width: width, 
+    height: height,
+    // paper_bgcolor:'rgba(0,0,0,0)',
+    // plot_bgcolor:'rgba(0,0,0,0)',
+    title: 'Speed (Km/h)',
+    xaxis: { title: 'Time' },
+    yaxis: { title: 'Speed' },
+    paper_bgcolor : backgroundColorLayer,
+    plot_bgcolor : backgroundColorLayer,
+  });
+
 
 
   return (
-    <div className={styles.main}>
+    <body>
       {!isConnected ? 
         <div className={styles.errorContainer}>
           <h1>WebSocket Not Connected</h1>
@@ -203,63 +211,106 @@ export default function Home() {
         : 
         <Swiper>
           <SwiperSlide>
-            <div className={styles.main}>
-              <div className={styles.container}>
-                {<Plot data={speedData} layout={gaugeChartLayout} />}
+            <div className={styles.page}>
+              <div className={styles.gaugeChartFirst}>
+                <AutoSizer>
+                  {({ height, width }) => (
+                    <Plot data={speedData} config={{ autosizable: true }} layout={chartLayout(height, width)} />
+                  )}
+                </AutoSizer>
               </div>
-              <div className={styles.container}>
-                {<Plot data={RPM_Data} layout={gaugeChartLayout} />}
+              <div className={styles.gaugeChartSecond}>
+                <AutoSizer>
+                  {({ height, width }) => (
+                    <Plot data={RPM_Data} config={{ autosizable: true }} layout={chartLayout(height, width)} />
+                  )}
+                </AutoSizer>
               </div>
-              <div className={styles.container}>
-                <Chart
-                  width= {'100%'}
-                  options={optionsEngineLoad}
-                  series={optionsEngineLoad.series}
-                  type="bar"
-                  height={70}
-                />
-                <Chart
-                  width= {'100%'}
-                  options={optionsAbsoluteLoad}
-                  series={optionsAbsoluteLoad.series}
-                  type="bar"
-                  height={70}
-                />
-                <Chart
-                  width= {'100%'}
-                  options={optionsThorttlePos}
-                  series={optionsThorttlePos.series}
-                  type="bar"
-                  height={70}
-                />
-                <Chart
-                  width= {'100%'}
-                  options={optionsFuelLevel}
-                  series={optionsFuelLevel.series}
-                  type="bar"
-                  height={70}
-                />
+              <div className={styles.barChartContainer}>
+                <div className={styles.barChart}> 
+                  <AutoSizer>
+                    {({ height, width }) => (
+                      <Chart
+                        height= {height}
+                        width= {width}
+                        series={optionsEngineLoad.series}
+                        options={optionsEngineLoad}
+                        type="bar"
+                      />
+                    )}
+                  </AutoSizer>
+                </div>
+                <div className={styles.barChart}> 
+                  <AutoSizer>
+                    {({ height, width }) => (
+                      <Chart
+                        height= {height}
+                        width= {width}
+                        options={optionsAbsoluteLoad}
+                        series={optionsAbsoluteLoad.series}
+                        type="bar"
+                      />
+                    )}
+                  </AutoSizer>
+                </div>
+                <div className={styles.barChart}> 
+                  <AutoSizer>
+                    {({ height, width }) => (
+                      <Chart
+                        height= {height}
+                        width= {width}
+                        options={optionsThorttlePos}
+                        series={optionsThorttlePos.series}
+                        type="bar"
+                      />
+                    )}
+                  </AutoSizer>
+                </div>
+                <div className={styles.barChart}> 
+                  <AutoSizer>
+                    {({ height, width }) => (
+                      <Chart
+                        height= {height}
+                        width= {width}
+                        options={optionsFuelLevel}
+                        series={optionsFuelLevel.series}
+                        type="bar"
+                      />
+                    )}
+                  </AutoSizer>
+                </div>
+              </div>
+              <div className={styles.FourthContainer}>
+                <AutoSizer>
+                  {({ height, width }) => (
+                    <Plot data={runtimeData} config={{ autosizable: true }} layout={chartLayout(height, width)} />
+                  )}
+                </AutoSizer>     
               </div>
             </div>
           </SwiperSlide>
           <SwiperSlide>
-            <div className={styles.main}>
+            <div className={styles.page}>
               <div className={styles.lineChart}>
-                <Plot
-                  data={[{
-                    x: timeStamps,
-                    y: speedArrayData,
-                    type: 'scatter',
-                    mode: 'lines+markers',
-                    marker: { color: 'black' },
-                    }]}
-                  layout={lineChartLayout}
-                />
+                <AutoSizer>
+                  {({ height, width }) => (
+                    <Plot
+                    data={[{
+                      x: timeStamps,
+                      y: speedArrayData,
+                      type: 'scatter',
+                      mode: 'lines+markers',
+                      marker: { color: blueColor },
+                      }]}
+                    layout={lineChartLayout(height, width)}
+                  />
+                  )}
+                </AutoSizer>
               </div>
             </div>
           </SwiperSlide>
         </Swiper>
       }
-    </div>
+    </body>
   )
 }

@@ -1,18 +1,24 @@
 # Car Dashboard Project
-### Overview
+## Overview
 This project is a car dashboard built using Next.js, designed to display real-time data retrieved from the OBD-II port of your car 🚗. The primary goals of this project are to gain a better understanding of real-time data handling 📊, data storage 🗄️, and management, while also providing an opportunity to practice and enhance my front-end development skills.
 
-### Demonstration
+## Demonstration
 
-Demonstrations, including images and videos, will be added soon
+Demonstrations, including images and videos, will be added soon. Here are only some images with dummy data for now.
 
-### Usage 
+![First Page with Dummy Data](./public/DummyDataPage1.jpeg)
+
+![Second Page with Dummy Data](./public/DummyDataPage2.jpeg)
+
+## Usage 
 
 ``` todo ```
 
-### Contributing
+## Contributing
 
-#### Desktop Application
+Feel free to contribute to this project if you are interested.
+
+### Desktop Application
 
 If you prefer working with desktop applications (which is the preferred method for this use case), follow these steps:
 
@@ -42,7 +48,7 @@ If you prefer working with desktop applications (which is the preferred method f
     npm run tauri dev
     ```
 
-#### Web Application
+### Web Application
 
 If you prefer working with web applications, I highly suggest using Docker. Make sure you have Docker installed on your development device, and simply run:
 
