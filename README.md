@@ -56,6 +56,17 @@ If you prefer working with web applications, I highly suggest using Docker. Make
 docker compose up
 ```
 
+## What's next? 
+
+- Implement new pages.
+    - Enhance car statistics with additional metrics.
+    - Create a page to display hardware resource data, such as Raspberry Pi performance metrics.
+- Store the data in a database for further data analysis.
+
+
+
+
+
 
 
 
