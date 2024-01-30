@@ -1,0 +1,60 @@
+.page {
+  display: grid;
+  grid-template-columns: repeat(10, 1fr);
+  grid-template-rows: repeat(2, 1fr);
+  margin: 1rem;
+  padding-bottom: 2rem;
+  column-gap: 1rem;
+  row-gap: 1rem;
+  height: 100vh;
+}
+
+.firstContainer {
+  grid-column: 1 / span 5;
+  grid-row: 1;
+  height: 100%;
+  place-self: center stretch;
+  border-radius: 1rem;
+  box-shadow: rgb(36, 36, 68) 0px 20px 30px -10px;
+  background-color: var(--background-color-layer);
+}
+
+.secondContainer {
+  grid-column: 6 / span 5;
+  grid-row: 1;
+  height: 100%;
+  place-self: center stretch;
+  border-radius: 1rem;
+  box-shadow: rgb(36, 36, 68) 0px 20px 30px -10px;
+  background-color: var(--background-color-layer);
+}
+
+.thirdContainer {
+  grid-column: 1 / span 4;
+  grid-row: 2;
+  height: 100%;
+  padding: 1rem;
+  border-radius: 1rem;
+  box-shadow: rgb(36, 36, 68) 0px 20px 30px -10px;
+  background-color: var(--background-color-layer);
+  display: flex;
+  flex-flow: column wrap;
+  justify-content: space-between;
+}
+
+.horitontalBarChart {
+  margin: 0.25rem;
+  flex: 1;
+}
+
+.FourthContainer {
+  grid-column: 5 / span 6;
+  grid-row: 2;
+  height: 100%;
+  padding: 1rem;
+  border-radius: 1rem;
+  box-shadow: rgb(36, 36, 68) 0px 20px 30px -10px;
+  background-color: var(--background-color-layer);
+}
+
+
