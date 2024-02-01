@@ -10,18 +10,25 @@ def generate_value(current_val):
   return max(0.0, min(new_val, 100))
 
 async def send_speed(websocket, path):
+  speed = 50
   engine_load = 5.0
   absolute_load = 5.0
   throttle_pos = 10.0
   fuel_level = 89.9
+  coolant_temp = 60.0
+  intake_temp = 20.0
+  ambient_temp = 0.0
   while True:
     # to replace with real data
-    speed_kmh = random.uniform(0, 130) 
+    speed_kmh = generate_value(speed)
     rpm = random.uniform(0, 5500)
     engine_load = generate_value(engine_load)
     absolute_load = generate_value(absolute_load)
     throttle_pos = generate_value(throttle_pos)
     engine_run_time = random.uniform(0, 1000)
+    coolant_temp = generate_value(coolant_temp)
+    intake_temp = generate_value(intake_temp)
+    ambient_temp = generate_value(ambient_temp)
     data = {
       'speed': speed_kmh,
       'rpm': rpm,
@@ -29,7 +36,10 @@ async def send_speed(websocket, path):
       'absoluteLoad': absolute_load,
       'throttlePos': throttle_pos,
       'fuelLevel': fuel_level,
-      'engineRunTime': engine_run_time
+      'engineRunTime': engine_run_time,
+      'coolantTemp': coolant_temp,
+      'intakeTemp': intake_temp,
+      'ambientTemp': ambient_temp,
       }
     await websocket.send(json.dumps(data))
     await asyncio.sleep(0.5) 

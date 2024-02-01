@@ -217,13 +217,13 @@ export default function Page1({speed, rpm, engineLoad, absoluteLoad, throttlePos
 };
 
 Page1.propTypes = {
-  speed: PropTypes.bigint.isRequired,
-  rpm: PropTypes.bigint.isRequired, 
-  engineLoad: PropTypes.bigint.isRequired, 
-  absoluteLoad: PropTypes.bigint.isRequired, 
-  throttlePos: PropTypes.bigint.isRequired, 
-  fuelLevel: PropTypes.bigint.isRequired, 
-  engineRunTime: PropTypes.bigint.isRequired
+  speed: PropTypes.string.isRequired,
+  rpm: PropTypes.string.isRequired, 
+  engineLoad: PropTypes.string.isRequired, 
+  absoluteLoad: PropTypes.string.isRequired, 
+  throttlePos: PropTypes.string.isRequired, 
+  fuelLevel: PropTypes.string.isRequired, 
+  engineRunTime: PropTypes.string.isRequired
 };
 
 

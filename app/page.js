@@ -8,6 +8,7 @@ import "swiper/css";
 
 import Page1 from './components/page1';
 import Page2 from './components/page2';
+import Page3 from './components/page3';
 
 export default function Home() {
 
@@ -19,7 +20,9 @@ export default function Home() {
   const [fuelLevel, setFuelLevel] = useState(100);
   const [engineRunTime, setEngineRunTime] = useState(0);
 
-  // const [coolantTemp, setCoolantTemp] = useState(0); 
+  const [coolantTemp, setCoolantTemp] = useState([]); 
+  const [intakeTemp, setIntakeTemp] = useState([]); 
+  const [ambientTemp, setAmbientTemp] = useState([]); 
 
   const [timeStamps, setTimeStamps] = useState([]);
   const [speedArrayData, setSpeedArrayData] = useState([]);
@@ -46,6 +49,30 @@ export default function Home() {
       setFuelLevel(parseFloat(obj.fuelLevel).toFixed(2)); 
       setEngineRunTime(parseFloat(obj.engineRunTime).toFixed(2));
 
+      setCoolantTemp((prevTemp) => [
+        ...prevTemp,
+        {
+          x: new Date().getTime(),
+          y: parseFloat(obj.coolantTemp).toFixed(2)
+        }
+      ]);
+
+      setIntakeTemp((prevTemp) => [
+        ...prevTemp,
+        {
+          x: new Date().getTime(),
+          y: parseFloat(obj.intakeTemp).toFixed(2)
+        }
+      ]);
+
+      setAmbientTemp((prevTemp) => [
+        ...prevTemp,
+        {
+          x: new Date().getTime(),
+          y: parseFloat(obj.ambientTemp).toFixed(2)
+        }
+      ]);
+
       setTimeStamps((prevTimeStamps) => [...prevTimeStamps, new Date()]);
       setSpeedArrayData((prevSpeedData) => [...prevSpeedData, parseFloat(obj.speed).toFixed(2)]);
       setIsConnected(true);
@@ -70,6 +97,9 @@ export default function Home() {
           </SwiperSlide>
           <SwiperSlide>
             <Page2 timeStamps={timeStamps} speedArrayData={speedArrayData}/>
+          </SwiperSlide>
+          <SwiperSlide>
+            <Page3 coolantTemp={coolantTemp} intakeTemp={intakeTemp} ambientTemp={ambientTemp}/>
           </SwiperSlide>
         </Swiper>
       }
