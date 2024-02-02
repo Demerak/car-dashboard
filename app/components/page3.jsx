@@ -5,6 +5,7 @@ import AutoSizer from "react-virtualized-auto-sizer";
 
 import styles from './page3.module.css';
 
+const Plot = dynamic(() => import('react-plotly.js'), { ssr: false });
 const Chart = dynamic(() => import('react-apexcharts'), { ssr: false });
 
 export default function Page3({coolantTemp, intakeTemp, ambientTemp}) {
@@ -70,11 +71,33 @@ export default function Page3({coolantTemp, intakeTemp, ambientTemp}) {
     },
   });
 
-  let coolantTempLineChartLayout = createApexChartLine('Engine Coolant Temperature', coolantTemp);
-  let intakeTempLineChartLayout = createApexChartLine('Intake Air Temp', intakeTemp);
-  let ambientAirTempLineChartLayout = createApexChartLine('Ambient Air Temp', ambientTemp);
+  let coolantTempLineChartLayout = createApexChartLine('Engine Coolant Temperature (°C)', coolantTemp);
+  let intakeTempLineChartLayout = createApexChartLine('Intake Air Temp (°C)', intakeTemp);
+  let ambientAirTempLineChartLayout = createApexChartLine('Ambient Air Temp (°C)', ambientTemp);
 
   let listOfChart = [coolantTempLineChartLayout, intakeTempLineChartLayout, ambientAirTempLineChartLayout];
+
+  const createPlotlyIndicatorData = (data) => ([{
+    type: "indicator",
+    mode: "number",
+    value: data,
+ 
+    number: {font: {size:50}, suffix: "°C" },
+    domain: { x: [0, 1], y: [0, 1] }
+  }]);
+
+  let plotlyChartLayout = (height, width) => ({ 
+    width: width, 
+    height: height,
+    paper_bgcolor:'rgba(0,0,0,0)',
+    plot_bgcolor:'rgba(0,0,0,0)'
+  });
+    
+  let listOfIndicator = [
+    createPlotlyIndicatorData(coolantTemp.slice(-1)[0].y), 
+    createPlotlyIndicatorData(intakeTemp.slice(-1)[0].y), 
+    createPlotlyIndicatorData(ambientTemp.slice(-1)[0].y)
+  ];
 
   return (
     <div className={styles.page}>
@@ -93,6 +116,20 @@ export default function Page3({coolantTemp, intakeTemp, ambientTemp}) {
                 />
               )}
             </AutoSizer>
+          </div> 
+        </div>
+      ))}
+      {listOfIndicator.map((indicatorLayout, index) => (
+        <div key={index} className={styles[`tempDisplay${index+1}`]}>
+          <div className={styles.indicator}>
+            <AutoSizer>
+              {({ height, width }) => (
+                <Plot 
+                  data={indicatorLayout}
+                  config={{ autosizable: true }} 
+                  layout={plotlyChartLayout(height, width)} />
+              )}
+            </AutoSizer>     
           </div> 
         </div>
       ))}

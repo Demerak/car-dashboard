@@ -10,6 +10,8 @@ Demonstrations, including images and videos, will be added soon. Here are only s
 
 ![Second Page with Dummy Data](./public/DummyDataPage2.jpeg)
 
+![Second Page with Dummy Data](./public/DummyDataPage3.jpeg)
+
 ## Usage 
 
 To get started, you'll need an OBD2 Scanner. I'm using a Bluetooth scanner, specifically this one: ![VEEPEAK OBD](https://a.co/d/1LcwUQD). It's been reliable, but remember to unplug it once you're finished using it.
@@ -37,7 +39,7 @@ If you prefer working with desktop applications (which is the preferred method f
     - **Using Docker**: Run the following command:
 
         ```bash
-        docker-compose up api
+        docker compose up api
         ```
 
     - **Running Locally**: If you don't have Docker installed, you can run the script locally. Start by creating a virtual environment for Python and installing the required dependencies:

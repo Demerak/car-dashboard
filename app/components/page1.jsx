@@ -44,20 +44,20 @@ export default function Page1({speed, rpm, engineLoad, absoluteLoad, throttlePos
       title: { text: "RPM", font: { size: 24 }},
       delta: { reference: 90, decreasing: { color: "green" } },
       gauge: {
-        axis: { range: [null, 5500], tickwidth: 1, tickcolor: "#146ca4" },
+        axis: { range: [null, 8000], tickwidth: 1, tickcolor: "#146ca4" },
         bar: { color: "darkblue" },
         bgcolor: "white",
         borderwidth: 2,
         bordercolor: "gray",
         steps: [
-          { range: [0, 130], color: "#52b7e9" },
-          { range: [130, 205], color: "#189de4" },
-          { range: [205, 240], color: "#242444" }
+          { range: [0, 1000], color: "#52b7e9" },
+          { range: [1000, 6500], color: "#189de4" },
+          { range: [6500, 8000], color: "#242444" }
         ],
         threshold: {
           line: { color: "red", width: 4 },
           thickness: 0.75,
-          value: 205
+          value: 6500
         }
       }
     }
@@ -140,14 +140,14 @@ export default function Page1({speed, rpm, engineLoad, absoluteLoad, throttlePos
       <div className={styles.firstContainer}>
         <AutoSizer>
           {({ height, width }) => (
-            <Plot data={speed_Data} config={{ autosizable: true }} layout={plotlyChartLayout(height, width)} />
+            <Plot data={speed_Data} config={{ autosizable: true }} layout={plotlyChartLayout(height + 30, width)} />
           )}
         </AutoSizer>
       </div>
       <div className={styles.secondContainer}>
         <AutoSizer>
           {({ height, width }) => (
-            <Plot data={RPM_Data} config={{ autosizable: true }} layout={plotlyChartLayout(height, width)} />
+            <Plot data={RPM_Data} config={{ autosizable: true }} layout={plotlyChartLayout(height + 30, width)} />
           )}
         </AutoSizer>
       </div>
@@ -208,7 +208,7 @@ export default function Page1({speed, rpm, engineLoad, absoluteLoad, throttlePos
       <div className={styles.FourthContainer}>
         <AutoSizer>
           {({ height, width }) => (
-            <Plot data={runtimeData} config={{ autosizable: true }} layout={plotlyChartLayout(height, width)} />
+            <Plot data={runtimeData} config={{ autosizable: true }} layout={plotlyChartLayout(height + 30, width)} />
           )}
         </AutoSizer>     
       </div>

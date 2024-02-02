@@ -10,7 +10,7 @@
 }
 
 .lineChartContainer1 {
-  grid-column: 1 / span 6;
+  grid-column: 1 / span 7;
   grid-row: 1 / span 2;
   height: 100%;
   place-self: center stretch;
@@ -20,7 +20,7 @@
 }
 
 .lineChartContainer2 {
-  grid-column: 1 / span 6;
+  grid-column: 1 / span 7;
   grid-row: 3 / span 2;
   height: 100%;
   place-self: center stretch;
@@ -30,7 +30,7 @@
 }
 
 .lineChartContainer3 {
-  grid-column: 1 / span 6;
+  grid-column: 1 / span 7;
   grid-row: 5 / span 2;
   height: 100%;
   place-self: center stretch;
@@ -43,4 +43,40 @@
   height: 100%;
   padding: 1rem;
 }
+
+.tempDisplay1 {
+  grid-column: 8 / span 3;
+  grid-row: 1 / span 2;
+  height: 100%;
+  padding: 1rem;
+  border-radius: 1rem;
+  box-shadow: rgb(36, 36, 68) 0px 20px 30px -10px;
+  background-color: var(--background-color-layer);
+}
+
+.tempDisplay2 {
+  grid-column:  8 / span 3;
+  grid-row: 3 / span 2;
+  height: 100%;
+  padding: 1rem;
+  border-radius: 1rem;
+  box-shadow: rgb(36, 36, 68) 0px 20px 30px -10px;
+  background-color: var(--background-color-layer);
+}
+
+.tempDisplay3 {
+  grid-column: 8 / span 3;
+  grid-row: 5 / span 2;
+  height: 100%;
+  padding: 1rem;
+  border-radius: 1rem;
+  box-shadow: rgb(36, 36, 68) 0px 20px 30px -10px;
+  background-color: var(--background-color-layer);
+}
+
+.indicator {
+  height: 100%;
+  padding: 1rem;
+}
+
 
