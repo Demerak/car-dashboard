@@ -4,7 +4,7 @@ This project is a car dashboard built using Next.js, designed to display real-ti
 
 ## Demonstration
 
-Demonstrations, including images and videos, will be added soon. Here are only some images with dummy data for now.
+Demonstrations, including images and videos, will be added soon. Here are some images with dummy data for now.
 
 ![First Page with Dummy Data](./public/DummyDataPage1.jpeg)
 
@@ -16,7 +16,7 @@ Demonstrations, including images and videos, will be added soon. Here are only s
 
 To get started, you'll need an OBD2 Scanner. I'm using a Bluetooth scanner, specifically this one: [VEEPEAK OBD](https://a.co/d/1LcwUQD). It's been reliable, but remember to unplug it once you're finished using it.
 
-Additionally, you'll also need a computer. I make use of both my laptop and Raspberry Pi. When working with the Raspberry Pi, I have it hoop up to a 7-inch touchscreen monitor specifically designed for it: [Freenove 7 Inch Touchscreen Monitor for Raspberry Pi](https://a.co/d/ac74IBm). It works great, and I've even designed a 3D-printed case, which I plan to share here later for anyone interested in printing it.
+Additionally, you'll also need a computer. I make use of both my laptop and Raspberry Pi. When working with the Raspberry Pi, I have it hook up to a 7-inch touchscreen monitor specifically designed for it: [Freenove 7 Inch Touchscreen Monitor for Raspberry Pi](https://a.co/d/ac74IBm). It works great, and I've even designed a 3D-printed case, which I plan to share here later for anyone interested in printing it.
 
 ``` todo ```
 

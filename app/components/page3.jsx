@@ -31,6 +31,9 @@ export default function Page3({coolantTemp, intakeTemp, ambientTemp}) {
           enabled: false
         }
       },
+      tooltip: {
+        enabled: false,
+      },
       dataLabels: {
         enabled: false
       },
@@ -45,9 +48,8 @@ export default function Page3({coolantTemp, intakeTemp, ambientTemp}) {
         offsetY: 0,
         floating: false,
         style: {
-          fontSize:  '14px',
+          fontSize:  '18px',
           fontWeight:  'bold',
-          color:  '#263238'
         }
       },
       xaxis: {
@@ -81,7 +83,6 @@ export default function Page3({coolantTemp, intakeTemp, ambientTemp}) {
     type: "indicator",
     mode: "number",
     value: data,
- 
     number: {font: {size:50}, suffix: "°C" },
     domain: { x: [0, 1], y: [0, 1] }
   }]);
