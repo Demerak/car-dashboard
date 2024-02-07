@@ -9,9 +9,18 @@ services:
     environment:
       - NODE_ENV=development
     command: npm run dev
-  api:
-    build: ./api/
+  server:
+    build: ./server/
     ports:
       - "8765:8765"
+    environment:
+      - MONGO_URI=mongodb://mongodb:27017/vehicle_data
     volumes:
-      - ./api:/code/api
+      - ./server:/code/server
+  mongodb:
+    build: ./database/
+    ports:
+      - "27017:27017"
+    volumes:
+      - ./database/mongodb_data:/data/db
+

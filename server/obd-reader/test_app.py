@@ -5,7 +5,7 @@ import json
 import ssl
 import pathlib
 
-# TODO - add SSL certificate
+#TODO - add SSL certificate
 # ssl_context = ssl.SSLContext(ssl.PROTOCOL_TLS_SERVER)
 # localhost_pem = pathlib.Path(__file__).with_name("localhost.pem")
 # ssl_context.load_cert_chain(localhost_pem)
@@ -51,7 +51,13 @@ async def handle_connection(websocket, path):
     await websocket.send(json.dumps(data))
     await asyncio.sleep(0.5) 
 
-start_server = websockets.serve(handle_connection, "0.0.0.0", 8765) # ssl=ssl_context
+# start_server = websockets.serve(handle_connection, "0.0.0.0", 8765) # ssl=ssl_context
 
-asyncio.get_event_loop().run_until_complete(start_server)
-asyncio.get_event_loop().run_forever()
+# asyncio.get_event_loop().run_until_complete(start_server)
+# asyncio.get_event_loop().run_forever()
+async def main():
+  async with websockets.serve(handle_connection, "0.0.0.0", 8765):
+      await asyncio.Future()  # run forever
+
+if __name__ == "__main__":
+  asyncio.run(main())
