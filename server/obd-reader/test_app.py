@@ -4,6 +4,7 @@ import random
 import json
 import ssl
 import pathlib
+from datetime import datetime
 
 #TODO - add SSL certificate
 # ssl_context = ssl.SSLContext(ssl.PROTOCOL_TLS_SERVER)
@@ -36,6 +37,7 @@ async def handle_connection(websocket, path):
     coolant_temp = generate_value(coolant_temp)
     intake_temp = generate_value(intake_temp)
     ambient_temp = generate_value(ambient_temp)
+
     data = {
       'speed': speed_kmh,
       'rpm': rpm,
@@ -47,6 +49,7 @@ async def handle_connection(websocket, path):
       'coolantTemp': coolant_temp,
       'intakeTemp': intake_temp,
       'ambientTemp': ambient_temp,
+      'timestamp': datetime.now().isoformat()
       }
     await websocket.send(json.dumps(data))
     await asyncio.sleep(0.5) 
