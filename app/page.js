@@ -12,20 +12,28 @@ import Page3 from './components/page3';
 
 export default function Home() {
 
-  const [speed, setSpeed] = useState(200);
-  const [rpm, setRPM] = useState(0);
-  const [engineLoad, setEngineLoad] = useState(0);
-  const [absoluteLoad, setAbsoluteLoad] = useState(0);
-  const [throttlePos, setThrottlePos] = useState(0);
-  const [fuelLevel, setFuelLevel] = useState(100);
-  const [engineRunTime, setEngineRunTime] = useState(0);
+  const MAX_ARRAY_LENGTH = 600;
 
-  const [coolantTemp, setCoolantTemp] = useState([]); 
-  const [intakeTemp, setIntakeTemp] = useState([]); 
-  const [ambientTemp, setAmbientTemp] = useState([]); 
+  const [vehicleMetrics, setVehicleMetrics] = useState({
+    speed: 0,
+    rpm: 0,
+    engineLoad: 0,
+    absoluteLoad: 0,
+    throttlePos: 0,
+    fuelLevel: 100,
+    engineRunTime: 0
+  });
 
-  const [timeStamps, setTimeStamps] = useState([]);
-  const [speedArrayData, setSpeedArrayData] = useState([]);
+  const [temperatureData, setTemperatureData] = useState({
+    coolantTemp: [],
+    intakeTemp: [],
+    ambientTemp: []
+  });
+
+  const [speedArrayData, setSpeedArrayData] = useState({
+    timeStamps: [],
+    speedData: []
+  });
 
   const [isConnected, setIsConnected] = useState(false);
 
@@ -40,41 +48,50 @@ export default function Home() {
 
     socket.onmessage = (event) => {
       const obj = JSON.parse(event.data);
+      const readTime = new Date();
       
-      setSpeed(parseFloat(obj.speed).toFixed(2));
-      setRPM(parseFloat(obj.rpm).toFixed(2));
-      setEngineLoad(parseFloat(obj.engineLoad).toFixed(2));
-      setAbsoluteLoad(parseFloat(obj.absoluteLoad).toFixed(2));
-      setThrottlePos(parseFloat(obj.throttlePos).toFixed(2));
-      setFuelLevel(parseFloat(obj.fuelLevel).toFixed(2)); 
-      setEngineRunTime(parseFloat(obj.engineRunTime).toFixed(2));
+      setVehicleMetrics(prevMetrics => ({
+        ...prevMetrics,
+        speed: parseFloat(obj.speed).toFixed(2),
+        rpm: parseFloat(obj.rpm).toFixed(2),
+        engineLoad: parseFloat(obj.engineLoad).toFixed(2),
+        absoluteLoad: parseFloat(obj.absoluteLoad).toFixed(2),
+        throttlePos: parseFloat(obj.throttlePos).toFixed(2),
+        fuelLevel: parseFloat(obj.fuelLevel).toFixed(2),
+        engineRunTime: parseFloat(obj.engineRunTime).toFixed(2)
+      }));
 
-      setCoolantTemp((prevTemp) => [
-        ...prevTemp,
-        {
-          x: new Date().getTime(),
-          y: parseFloat(obj.coolantTemp).toFixed(2)
-        }
-      ]);
+      setTemperatureData(prevData => ({
+        coolantTemp: [
+          ...prevData.coolantTemp,
+          {
+            x: readTime.getTime(),
+            y: parseFloat(obj.coolantTemp).toFixed(2)
+          }
+        ].slice(-MAX_ARRAY_LENGTH),
+        intakeTemp: [
+          ...prevData.intakeTemp,
+          {
+            x: readTime.getTime(),
+            y: parseFloat(obj.intakeTemp).toFixed(2)
+          }
+        ].slice(-MAX_ARRAY_LENGTH),
+        ambientTemp: [
+          ...prevData.ambientTemp,
+          {
+            x: readTime.getTime(),
+            y: parseFloat(obj.ambientTemp).toFixed(2)
+          }
+        ].slice(-MAX_ARRAY_LENGTH)
+      }));
+      
 
-      setIntakeTemp((prevTemp) => [
-        ...prevTemp,
-        {
-          x: new Date().getTime(),
-          y: parseFloat(obj.intakeTemp).toFixed(2)
-        }
-      ]);
+      setSpeedArrayData(prevSpeedData => ({
+        timeStamps: [...prevSpeedData.timeStamps, readTime].slice(-MAX_ARRAY_LENGTH),
+        speedData: [...prevSpeedData.speedData, parseFloat(obj.speed).toFixed(2)].slice(-MAX_ARRAY_LENGTH)
+      }));
 
-      setAmbientTemp((prevTemp) => [
-        ...prevTemp,
-        {
-          x: new Date().getTime(),
-          y: parseFloat(obj.ambientTemp).toFixed(2)
-        }
-      ]);
-
-      setTimeStamps((prevTimeStamps) => [...prevTimeStamps, new Date()]);
-      setSpeedArrayData((prevSpeedData) => [...prevSpeedData, parseFloat(obj.speed).toFixed(2)]);
+  
       setIsConnected(true);
     };
 
@@ -93,13 +110,13 @@ export default function Home() {
         : 
         <Swiper>
           <SwiperSlide>
-            <Page1 speed={speed} rpm={rpm} engineLoad={engineLoad} absoluteLoad={absoluteLoad} throttlePos={throttlePos} fuelLevel={fuelLevel} engineRunTime={engineRunTime}/>
+            <Page1 vehicleMetrics={vehicleMetrics}/>
           </SwiperSlide>
           <SwiperSlide>
-            <Page2 timeStamps={timeStamps} speedArrayData={speedArrayData}/>
+            <Page2 speedArrayData={speedArrayData}/>
           </SwiperSlide>
           <SwiperSlide>
-            <Page3 coolantTemp={coolantTemp} intakeTemp={intakeTemp} ambientTemp={ambientTemp}/>
+            <Page3 temperatureData={temperatureData}/>
           </SwiperSlide>
         </Swiper>
       }

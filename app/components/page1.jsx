@@ -8,12 +8,12 @@ import styles from './page1.module.css';
 const Plot = dynamic(() => import('react-plotly.js'), { ssr: false });
 const Chart = dynamic(() => import('react-apexcharts'), { ssr: false });
 
-export default function Page1({speed, rpm, engineLoad, absoluteLoad, throttlePos, fuelLevel, engineRunTime}) {
+export default function Page1({vehicleMetrics}) {
   const speed_Data = [
     {
       type: "indicator",
       mode: "gauge+number+delta",
-      value: speed,
+      value: vehicleMetrics.speed,
       title: { text: "Speed (km/h)", font: { size: 24 } },
       delta: { reference: 90, decreasing: { color: "green" } },
       gauge: {
@@ -40,7 +40,7 @@ export default function Page1({speed, rpm, engineLoad, absoluteLoad, throttlePos
     {
       type: "indicator",
       mode: "gauge+number+delta",
-      value: rpm,
+      value: vehicleMetrics.rpm,
       title: { text: "RPM", font: { size: 24 }},
       delta: { reference: 90, decreasing: { color: "green" } },
       gauge: {
@@ -119,16 +119,16 @@ export default function Page1({speed, rpm, engineLoad, absoluteLoad, throttlePos
     }
   });
 
-  const engineLoadLayout = createHorizontalBarChartLayout('Engine Load', engineLoad);
-  const absoluteLoadLayout = createHorizontalBarChartLayout('Absolute Load', absoluteLoad);
-  const thorttlePosLayout = createHorizontalBarChartLayout('Throttle Pos', throttlePos);
-  const fuelLevelLayout = createHorizontalBarChartLayout('Fuel Level', fuelLevel);
+  const engineLoadLayout = createHorizontalBarChartLayout('Engine Load', vehicleMetrics.engineLoad);
+  const absoluteLoadLayout = createHorizontalBarChartLayout('Absolute Load', vehicleMetrics.absoluteLoad);
+  const thorttlePosLayout = createHorizontalBarChartLayout('Throttle Pos', vehicleMetrics.throttlePos);
+  const fuelLevelLayout = createHorizontalBarChartLayout('Fuel Level', vehicleMetrics.fuelLevel);
 
   const runtimeData = [
     {
       type: "indicator",
       mode: "number",
-      value: engineRunTime,
+      value: vehicleMetrics.engineRunTime,
       title: { text: "Engine runtime", font: { size: 24 } },
       number: { suffix: "s" },
       domain: { x: [0, 1], y: [0, 1] }
@@ -217,13 +217,7 @@ export default function Page1({speed, rpm, engineLoad, absoluteLoad, throttlePos
 };
 
 Page1.propTypes = {
-  speed: PropTypes.string.isRequired,
-  rpm: PropTypes.string.isRequired, 
-  engineLoad: PropTypes.string.isRequired, 
-  absoluteLoad: PropTypes.string.isRequired, 
-  throttlePos: PropTypes.string.isRequired, 
-  fuelLevel: PropTypes.string.isRequired, 
-  engineRunTime: PropTypes.string.isRequired
+  vehicleMetrics: PropTypes.object.isRequired
 };
 
 

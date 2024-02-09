@@ -11,7 +11,7 @@ const backgroundColor = '#242424';
 const backgroundColorLayer = '#161717';
 const blueColor = '#146ca4';
 
-export default function Page2({timeStamps, speedArrayData}) {
+export default function Page2({speedArrayData}) {
 
   let lineChartLayout = (height, width) => ({ 
     width: width, 
@@ -30,8 +30,8 @@ export default function Page2({timeStamps, speedArrayData}) {
           {({ height, width }) => (
             <Plot
             data={[{
-              x: timeStamps,
-              y: speedArrayData,
+              x: speedArrayData.timeStamps,
+              y: speedArrayData.speedData,
               type: 'scatter',
               mode: 'lines+markers',
               marker: { color: blueColor },
@@ -46,8 +46,7 @@ export default function Page2({timeStamps, speedArrayData}) {
 };
 
 Page2.propTypes = {
-  timeStamps: PropTypes.array.isRequired,
-  speedArrayData: PropTypes.array.isRequired 
+  speedArrayData: PropTypes.object.isRequired 
 };
 
 

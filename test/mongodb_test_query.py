@@ -7,8 +7,7 @@ def connect_to_database():
 
 dbname = connect_to_database()
 print(dbname)
-collection_name = dbname["vehicle_data_test"]
+collection = dbname["vehicle_data_test"]
 
-item_details = collection_name.find()
-for item in item_details:
+for item in collection.find():
   print(item)

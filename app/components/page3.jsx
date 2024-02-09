@@ -8,7 +8,7 @@ import styles from './page3.module.css';
 const Plot = dynamic(() => import('react-plotly.js'), { ssr: false });
 const Chart = dynamic(() => import('react-apexcharts'), { ssr: false });
 
-export default function Page3({coolantTemp, intakeTemp, ambientTemp}) {
+export default function Page3({temperatureData}) {
 
   const createApexChartLine = (titleText, data) => ({
     series: [{
@@ -73,9 +73,9 @@ export default function Page3({coolantTemp, intakeTemp, ambientTemp}) {
     },
   });
 
-  let coolantTempLineChartLayout = createApexChartLine('Engine Coolant Temperature (°C)', coolantTemp);
-  let intakeTempLineChartLayout = createApexChartLine('Intake Air Temp (°C)', intakeTemp);
-  let ambientAirTempLineChartLayout = createApexChartLine('Ambient Air Temp (°C)', ambientTemp);
+  let coolantTempLineChartLayout = createApexChartLine('Engine Coolant Temperature (°C)', temperatureData.coolantTemp);
+  let intakeTempLineChartLayout = createApexChartLine('Intake Air Temp (°C)', temperatureData.intakeTemp);
+  let ambientAirTempLineChartLayout = createApexChartLine('Ambient Air Temp (°C)', temperatureData.ambientTemp);
 
   let listOfChart = [coolantTempLineChartLayout, intakeTempLineChartLayout, ambientAirTempLineChartLayout];
 
@@ -95,9 +95,9 @@ export default function Page3({coolantTemp, intakeTemp, ambientTemp}) {
   });
     
   let listOfIndicator = [
-    createPlotlyIndicatorData(coolantTemp.slice(-1)[0].y), 
-    createPlotlyIndicatorData(intakeTemp.slice(-1)[0].y), 
-    createPlotlyIndicatorData(ambientTemp.slice(-1)[0].y)
+    createPlotlyIndicatorData(temperatureData.coolantTemp.slice(-1)[0].y), 
+    createPlotlyIndicatorData(temperatureData.intakeTemp.slice(-1)[0].y), 
+    createPlotlyIndicatorData(temperatureData.ambientTemp.slice(-1)[0].y)
   ];
 
   return (
@@ -139,9 +139,7 @@ export default function Page3({coolantTemp, intakeTemp, ambientTemp}) {
 };
 
 Page3.propTypes = {
-  coolantTemp: PropTypes.array.isRequired,
-  intakeTemp: PropTypes.array.isRequired,
-  ambientTemp: PropTypes.array.isRequired,
+  temperatureData: PropTypes.object.isRequired
 };
 
 
