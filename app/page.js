@@ -1,6 +1,6 @@
 'use client'
 
-import { React, useState, useEffect} from 'react';
+import { React, useState, useEffect } from 'react';
 import styles from './page.module.css';
 import { Swiper, SwiperSlide } from 'swiper/react';
 
@@ -48,7 +48,7 @@ export default function Home() {
 
     socket.onmessage = (event) => {
       const obj = JSON.parse(event.data);
-      const readTime = new Date();
+      const readTime = new Date().getTime();
       
       setVehicleMetrics(prevMetrics => ({
         ...prevMetrics,
@@ -58,28 +58,30 @@ export default function Home() {
         absoluteLoad: parseFloat(obj.absoluteLoad).toFixed(2),
         throttlePos: parseFloat(obj.throttlePos).toFixed(2),
         fuelLevel: parseFloat(obj.fuelLevel).toFixed(2),
-        engineRunTime: parseFloat(obj.engineRunTime).toFixed(2)
+        engineRunTime: new Date(obj.engineRunTime * 1000).toISOString().slice(11, 19) // parseFloat(obj.engineRunTime).toFixed(2)
       }));
+
+      console.log(new Date(obj.engineRunTime * 1000).toISOString().slice(11, 19));
 
       setTemperatureData(prevData => ({
         coolantTemp: [
           ...prevData.coolantTemp,
           {
-            x: readTime.getTime(),
+            x: readTime,
             y: parseFloat(obj.coolantTemp).toFixed(2)
           }
         ].slice(-MAX_ARRAY_LENGTH),
         intakeTemp: [
           ...prevData.intakeTemp,
           {
-            x: readTime.getTime(),
+            x: readTime,
             y: parseFloat(obj.intakeTemp).toFixed(2)
           }
         ].slice(-MAX_ARRAY_LENGTH),
         ambientTemp: [
           ...prevData.ambientTemp,
           {
-            x: readTime.getTime(),
+            x: readTime,
             y: parseFloat(obj.ambientTemp).toFixed(2)
           }
         ].slice(-MAX_ARRAY_LENGTH)

@@ -21,7 +21,7 @@ export default function Page3({temperatureData}) {
           enabled: true,
           easing: 'linear',
           dynamicAnimation: {
-            speed: 10
+            speed: 0.5
           }
         },
         toolbar: {

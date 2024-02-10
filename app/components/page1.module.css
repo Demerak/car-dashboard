@@ -55,6 +55,13 @@
   border-radius: 1rem;
   box-shadow: rgb(36, 36, 68) 0px 20px 30px -10px;
   background-color: var(--background-color-layer);
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  color: var(--background-color-2);
+  font-size: 2rem;
 }
+
 
 

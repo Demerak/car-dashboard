@@ -7,7 +7,6 @@ import styles from './page2.module.css';
 
 const Plot = dynamic(() => import('react-plotly.js'), { ssr: false });
 
-const backgroundColor = '#242424';
 const backgroundColorLayer = '#161717';
 const blueColor = '#146ca4';
 
@@ -17,7 +16,10 @@ export default function Page2({speedArrayData}) {
     width: width, 
     height: height,
     title: 'Speed (Km/h)',
-    xaxis: { title: 'Time' },
+    xaxis: { 
+      title: 'Time',
+      type: 'date',
+    },
     yaxis: { title: 'Speed' },
     paper_bgcolor : backgroundColorLayer,
     plot_bgcolor : backgroundColorLayer,
@@ -33,7 +35,7 @@ export default function Page2({speedArrayData}) {
               x: speedArrayData.timeStamps,
               y: speedArrayData.speedData,
               type: 'scatter',
-              mode: 'lines+markers',
+              mode: 'lines',
               marker: { color: blueColor },
               }]}
             layout={lineChartLayout(height, width)}

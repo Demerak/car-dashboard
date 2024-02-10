@@ -39,7 +39,7 @@ If you prefer working with desktop applications (which is the preferred method f
     - **Using Docker**: Run the following command:
 
         ```bash
-        docker compose up api
+        docker compose up server
         ```
 
     - **Running Locally**: If you don't have Docker installed, you can run the script locally. Start by creating a virtual environment for Python and installing the required dependencies:
@@ -76,6 +76,7 @@ docker compose up
 - [ ] Implement new pages.
     - [ ] Enhance car statistics with additional metrics.
     - [ ] Create a page to display hardware resource data, such as Raspberry Pi performance metrics.
+- [ ] Optimizations
 - [x] Store the data in a database for further data analysis.
 
 

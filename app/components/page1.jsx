@@ -32,7 +32,7 @@ export default function Page1({vehicleMetrics}) {
           thickness: 0.75,
           value: 205
         }
-      }
+      } 
     }
   ];
 
@@ -124,17 +124,6 @@ export default function Page1({vehicleMetrics}) {
   const thorttlePosLayout = createHorizontalBarChartLayout('Throttle Pos', vehicleMetrics.throttlePos);
   const fuelLevelLayout = createHorizontalBarChartLayout('Fuel Level', vehicleMetrics.fuelLevel);
 
-  const runtimeData = [
-    {
-      type: "indicator",
-      mode: "number",
-      value: vehicleMetrics.engineRunTime,
-      title: { text: "Engine runtime", font: { size: 24 } },
-      number: { suffix: "s" },
-      domain: { x: [0, 1], y: [0, 1] }
-    }
-  ];
-
   return (
     <div className={styles.page}>
       <div className={styles.firstContainer}>
@@ -206,11 +195,8 @@ export default function Page1({vehicleMetrics}) {
         </div>
       </div>
       <div className={styles.FourthContainer}>
-        <AutoSizer>
-          {({ height, width }) => (
-            <Plot data={runtimeData} config={{ autosizable: true }} layout={plotlyChartLayout(height + 30, width)} />
-          )}
-        </AutoSizer>     
+        <h1>	Engine Run Time </h1>
+        <h1> {vehicleMetrics.engineRunTime } </h1>
       </div>
     </div>
   );

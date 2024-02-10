@@ -17,7 +17,7 @@ def generate_value(current_val):
   new_val = current_val + random_incr
   return max(0.0, min(new_val, 100))
 
-async def handle_connection(websocket, path):
+async def handle_connection(websocket):
   speed = 50
   engine_load = 5.0
   absolute_load = 5.0
@@ -33,22 +33,22 @@ async def handle_connection(websocket, path):
     engine_load = generate_value(engine_load)
     absolute_load = generate_value(absolute_load)
     throttle_pos = generate_value(throttle_pos)
-    engine_run_time = random.uniform(0, 1000)
+    engine_run_time = random.randint(0, 1000)
     coolant_temp = generate_value(coolant_temp)
     intake_temp = generate_value(intake_temp)
     ambient_temp = generate_value(ambient_temp)
 
     data = {
-      'speed': speed_kmh,
+      'speed': round(speed_kmh,1),
       'rpm': rpm,
       'engineLoad': engine_load,
       'absoluteLoad': absolute_load,
       'throttlePos': throttle_pos,
       'fuelLevel': fuel_level,
       'engineRunTime': engine_run_time,
-      'coolantTemp': coolant_temp,
-      'intakeTemp': intake_temp,
-      'ambientTemp': ambient_temp,
+      'coolantTemp': round(coolant_temp,1),
+      'intakeTemp': round(intake_temp,1),
+      'ambientTemp': round(ambient_temp,1),
       'timestamp': datetime.now().isoformat()
       }
     await websocket.send(json.dumps(data))
@@ -60,7 +60,7 @@ async def handle_connection(websocket, path):
 # asyncio.get_event_loop().run_forever()
 async def main():
   async with websockets.serve(handle_connection, "0.0.0.0", 8765):
-      await asyncio.Future()  # run forever
+    await asyncio.Future()  # run forever
 
 if __name__ == "__main__":
   asyncio.run(main())
