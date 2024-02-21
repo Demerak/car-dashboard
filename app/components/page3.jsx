@@ -83,7 +83,7 @@ export default function Page3({temperatureData}) {
     type: "indicator",
     mode: "number",
     value: data,
-    number: {font: {size:50}, suffix: "°C" },
+    number: {font: {size:75}, suffix: "°C" },
     domain: { x: [0, 1], y: [0, 1] }
   }]);
 
